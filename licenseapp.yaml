@@ -1,0 +1,41 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "licenseapplicationdb"
+  namespace: "default"
+  labels:
+    app: "licenseapplicationdb"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "licenseapplicationdb"
+  template:
+    metadata:
+      labels:
+        app: "licenseapplicationdb"
+    spec:
+      containers:
+      - name: "vehicledb-sha256-1"
+        image: "gcr.io/cap1-339903/github.com/panthulushivani/vehicledb@sha256:a58286d5f0831c432c4027183fb4d59e51b3f54989181c8274cc49050ce1284b"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "licenseapplicationdb-hpa-w7xm"
+  namespace: "default"
+  labels:
+    app: "licenseapplicationdb"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "licenseapplicationdb"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
