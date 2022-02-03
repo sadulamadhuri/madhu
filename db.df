@@ -1,0 +1,3 @@
+FROM postgres
+ENV POSTGRES_DB=licenseappdb
+ENV POSTGRES_PASSWORD=Madhuri@99
